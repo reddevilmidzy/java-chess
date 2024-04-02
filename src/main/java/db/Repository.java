@@ -53,7 +53,7 @@ public class Repository {
         if (unsaved(findTurn, findMoving)) {
             restore(findTurn, findMoving, board);
         }
-        final Camp camp = findLastTurnCamp(findMoving);
+        final Camp camp = Camp.calculateTurn(findMoving.size());
         final GameTurn gameTurn = new GameTurn(camp, new Turn(findMoving.size()));
         return new ChessGame(board, gameTurn);
     }
@@ -68,13 +68,6 @@ public class Repository {
 
     private boolean unsaved(final TurnDto findTurn, final List<MovingDto> findMoving) {
         return findTurn.count() < findMoving.size();
-    }
-
-    private Camp findLastTurnCamp(final List<MovingDto> findMoving) {
-        if (findMoving.size() % 2 == 0) {
-            return Camp.WHITE;
-        }
-        return Camp.BLACK;
     }
 
     private void restore(final TurnDto findTurn, final List<MovingDto> findMoving, final Board board) {
