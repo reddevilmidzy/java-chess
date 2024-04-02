@@ -21,6 +21,10 @@ public record BoardDto(Map<PositionDto, PieceDto> pieces) {
         return new BoardDto(result);
     }
 
+    public static BoardDto create() {
+        return from(Board.create());
+    }
+
     public Board toBoard() {
         final Map<Position, Piece> result = new HashMap<>();
         for (Entry<PositionDto, PieceDto> entry : pieces.entrySet()) {

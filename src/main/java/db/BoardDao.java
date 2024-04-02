@@ -13,7 +13,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import model.Board;
 
 public class BoardDao {
 
@@ -58,12 +57,12 @@ public class BoardDao {
     private BoardDto convert(final ResultSet resultSet) throws SQLException {
         final Map<PositionDto, PieceDto> result = new HashMap<>();
         while (resultSet.next()) {
-            final PieceDto piece = convertToPiece(resultSet);
+            final PieceDto pieceDto = convertToPiece(resultSet);
             final PositionDto positionDto = convertToPosition(resultSet);
-            result.put(positionDto, piece);
+            result.put(positionDto, pieceDto);
         }
         if (result.isEmpty()) {
-            return BoardDto.from(Board.create());
+            return BoardDto.create();
         }
         return new BoardDto(result);
     }
