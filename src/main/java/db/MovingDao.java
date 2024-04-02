@@ -62,9 +62,9 @@ public class MovingDao {
     private List<MovingDto> convert(final ResultSet resultSet) throws SQLException {
         final List<MovingDto> moving = new ArrayList<>();
         while (resultSet.next()) {
-            String camp = resultSet.getString("camp");
-            String current = resultSet.getString("start");
-            String next = resultSet.getString("destination");
+            final String camp = resultSet.getString("camp");
+            final String current = resultSet.getString("start");
+            final String next = resultSet.getString("destination");
             moving.add(new MovingDto(camp, current, next));
         }
         return moving;
