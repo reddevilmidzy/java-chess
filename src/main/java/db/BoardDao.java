@@ -1,7 +1,7 @@
 package db;
 
 import constant.ErrorCode;
-import db.connection.DBConnectionUtil;
+import db.connection.DbConnectionUtil;
 import db.dto.BoardDto;
 import db.dto.PieceDto;
 import db.dto.PositionDto;
@@ -32,7 +32,7 @@ public class BoardDao {
 
     private void savePosition(final PositionDto position, final PieceDto piece) {
         final String query = "INSERT INTO board VALUES(?, ?, ?)";
-        try (final Connection connection = DBConnectionUtil.getConnection(database);
+        try (final Connection connection = DbConnectionUtil.getConnection(database);
              final PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, position.value());
             preparedStatement.setString(2, piece.type());
@@ -45,7 +45,7 @@ public class BoardDao {
 
     public BoardDto find() {
         final String query = "SELECT * FROM board";
-        try (final Connection connection = DBConnectionUtil.getConnection(database);
+        try (final Connection connection = DbConnectionUtil.getConnection(database);
              final PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             final ResultSet resultSet = preparedStatement.executeQuery();
             return convert(resultSet);
@@ -80,7 +80,7 @@ public class BoardDao {
 
     public void remove() {
         final String query = "TRUNCATE TABLE board";
-        try (final Connection connection = DBConnectionUtil.getConnection(database);
+        try (final Connection connection = DbConnectionUtil.getConnection(database);
              final PreparedStatement preparedStatement = connection.prepareStatement(query)
         ) {
             preparedStatement.executeUpdate();

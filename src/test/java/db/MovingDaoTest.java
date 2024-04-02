@@ -3,7 +3,7 @@ package db;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import db.connection.DBConnectionUtil;
+import db.connection.DbConnectionUtil;
 import db.dto.MovingDto;
 import db.exception.DaoException;
 import java.sql.Connection;
@@ -25,7 +25,7 @@ class MovingDaoTest {
     @DisplayName("데이터베이스 접속 확인")
     @Test
     void connection() throws SQLException {
-        try (final Connection connection = DBConnectionUtil.getConnection("chess_test")) {
+        try (final Connection connection = DbConnectionUtil.getConnection("chess_test")) {
             assertThat(connection).isNotNull();
         }
     }

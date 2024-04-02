@@ -1,7 +1,7 @@
 package db;
 
 import constant.ErrorCode;
-import db.connection.DBConnectionUtil;
+import db.connection.DbConnectionUtil;
 import db.dto.MovingDto;
 import db.exception.DaoException;
 import java.sql.Connection;
@@ -22,7 +22,7 @@ public class MovingDao {
 
     public long addMoving(final MovingDto moving) {
         final String query = "INSERT INTO moving VALUES(?, ?, ?, ?)";
-        try (final Connection connection = DBConnectionUtil.getConnection(database);
+        try (final Connection connection = DbConnectionUtil.getConnection(database);
              final PreparedStatement preparedStatement = connection.prepareStatement(query,
                      Statement.RETURN_GENERATED_KEYS)) {
             preparedStatementSet(moving, preparedStatement);
@@ -50,7 +50,7 @@ public class MovingDao {
 
     public List<MovingDto> findAll() {
         final String query = "SELECT * FROM moving";
-        try (final Connection connection = DBConnectionUtil.getConnection(database);
+        try (final Connection connection = DbConnectionUtil.getConnection(database);
              final PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             final ResultSet resultSet = preparedStatement.executeQuery();
             return convert(resultSet);
@@ -72,7 +72,7 @@ public class MovingDao {
 
     public int countMoving() {
         final String query = "SELECT count(*) AS count FROM moving";
-        try (final Connection connection = DBConnectionUtil.getConnection(database);
+        try (final Connection connection = DbConnectionUtil.getConnection(database);
              final PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             final ResultSet resultSet = preparedStatement.executeQuery();
             return convertToCount(resultSet);
@@ -90,7 +90,7 @@ public class MovingDao {
 
     public MovingDto findByMovementId(final long movementId) {
         final String query = "SELECT * FROM moving WHERE movement_id = ?";
-        try (final Connection connection = DBConnectionUtil.getConnection(database);
+        try (final Connection connection = DbConnectionUtil.getConnection(database);
              final PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, movementId);
             final ResultSet resultSet = preparedStatement.executeQuery();
@@ -113,7 +113,7 @@ public class MovingDao {
 
     public void remove() {
         final String query = "TRUNCATE TABLE moving";
-        try (final Connection connection = DBConnectionUtil.getConnection(database);
+        try (final Connection connection = DbConnectionUtil.getConnection(database);
              final PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.executeUpdate();
         } catch (final SQLException exception) {

@@ -1,7 +1,7 @@
 package db;
 
 import constant.ErrorCode;
-import db.connection.DBConnectionUtil;
+import db.connection.DbConnectionUtil;
 import db.dto.TurnDto;
 import db.exception.DaoException;
 import java.sql.Connection;
@@ -19,7 +19,7 @@ public class TurnDao {
 
     public void saveTurn(final TurnDto turnDto) {
         final String query = "INSERT INTO turn values(?, ?)";
-        try (final Connection connection = DBConnectionUtil.getConnection(database);
+        try (final Connection connection = DbConnectionUtil.getConnection(database);
              final PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, turnDto.currentCamp());
             preparedStatement.setInt(2, turnDto.count());
@@ -31,7 +31,7 @@ public class TurnDao {
 
     public TurnDto findTurn() {
         final String query = "SELECT * FROM turn";
-        try (final Connection connection = DBConnectionUtil.getConnection(database);
+        try (final Connection connection = DbConnectionUtil.getConnection(database);
              final PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             final ResultSet resultSet = preparedStatement.executeQuery();
             return convertToTurn(resultSet);
@@ -49,7 +49,7 @@ public class TurnDao {
 
     public void remove() {
         final String query = "TRUNCATE TABLE turn";
-        try (final Connection connection = DBConnectionUtil.getConnection(database);
+        try (final Connection connection = DbConnectionUtil.getConnection(database);
              final PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.executeUpdate();
         } catch (final SQLException exception) {
