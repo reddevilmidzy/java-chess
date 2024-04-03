@@ -2,11 +2,11 @@ package db.exception;
 
 import constant.ErrorCode;
 
-public class DBException extends RuntimeException {
+public class DbException extends RuntimeException {
 
     private final ErrorCode errorCode;
 
-    public DBException(final ErrorCode errorCode) {
+    public DbException(final ErrorCode errorCode) {
         this.errorCode = errorCode;
     }
 

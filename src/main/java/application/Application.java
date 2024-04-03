@@ -1,7 +1,7 @@
 package application;
 
 import controller.ChessController;
-import db.exception.DBException;
+import db.exception.DbException;
 import java.util.Scanner;
 import view.InputView;
 import view.OutputView;
@@ -15,7 +15,7 @@ public class Application {
         final ChessController chessController = new ChessController(inputView, outputView);
         try {
             chessController.run();
-        } catch (DBException exception) {
+        } catch (DbException exception) {
             outputView.printException(exception.getErrorCode());
         }
     }
