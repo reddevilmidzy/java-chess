@@ -8,14 +8,14 @@ import view.OutputView;
 
 public class Application {
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         final InputView inputView = new InputView(new Scanner(System.in));
         final OutputView outputView = new OutputView();
 
         final ChessController chessController = new ChessController(inputView, outputView);
         try {
             chessController.run();
-        } catch (DbException exception) {
+        } catch (final DbException exception) {
             outputView.printException(exception.getErrorCode());
         }
     }
