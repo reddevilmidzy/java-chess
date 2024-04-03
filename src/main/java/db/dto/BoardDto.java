@@ -14,9 +14,9 @@ public record BoardDto(Map<PositionDto, PieceDto> pieces) {
         final Map<Position, Piece> pieces = board.getPieces();
 
         for (Entry<Position, Piece> entry : pieces.entrySet()) {
-            final PositionDto position = PositionDto.from(entry.getKey());
-            final PieceDto piece = PieceDto.from(entry.getValue());
-            result.put(position, piece);
+            final PositionDto positionDto = PositionDto.from(entry.getKey());
+            final PieceDto pieceDto = PieceDto.from(entry.getValue());
+            result.put(positionDto, pieceDto);
         }
         return new BoardDto(result);
     }
