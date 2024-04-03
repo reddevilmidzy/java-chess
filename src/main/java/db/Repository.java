@@ -12,7 +12,7 @@ import model.Turn;
 import model.position.Moving;
 import model.position.Position;
 
-public class Repository {
+public class Repository { // TODO service아님? 왜 repository임
 
     private final MovingDao movingDao;
     private final TurnDao turnDao;

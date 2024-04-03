@@ -11,8 +11,8 @@ public record PieceDto(String type, String camp) {
     }
 
     public Piece toPiece() {
-        final CampType army = CampType.findByColorName(camp);
-        final PieceType pieceType = PieceType.findValue(army.getCamp(), type);
+        final CampType campType = CampType.findByColorName(camp);
+        final PieceType pieceType = PieceType.findValue(campType.getCamp(), type);
         return pieceType.getPiece();
     }
 }

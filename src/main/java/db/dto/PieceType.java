@@ -1,7 +1,12 @@
 package db.dto;
 
+import constant.ErrorCode;
+import exception.MessageDoesNotExistException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import model.Camp;
 import model.piece.Bishop;
 import model.piece.BlackPawn;
@@ -27,6 +32,9 @@ public enum PieceType {
     BLACK_KNIGHT(new Knight(Camp.BLACK), "Knight"),
     BLACK_PAWN(new BlackPawn(), "Pawn");
 
+    private static final Map<Piece, PieceType> SUIT_PIECE_TYPE = Arrays.stream(values())
+            .collect(Collectors.toMap(PieceType::getPiece, Function.identity()));
+
     private final Piece piece;
     private final String pieceName;
 
@@ -35,11 +43,11 @@ public enum PieceType {
         this.pieceName = pieceName;
     }
 
-    public static PieceType findValue(final Piece piece) {
-        return Arrays.stream(values())
-                .filter(pieceType1 -> pieceType1.piece.getClass().isInstance(piece))
-                .findFirst()
-                .orElseThrow();
+    public static PieceType findValue(final Piece target) {
+        if (SUIT_PIECE_TYPE.containsKey(target)) {
+            return SUIT_PIECE_TYPE.get(target);
+        }
+        throw new MessageDoesNotExistException(ErrorCode.NO_MESSAGE);
     }
 
     public static PieceType findValue(final Camp camp, final String type) {

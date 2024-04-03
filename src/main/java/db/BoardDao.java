@@ -81,8 +81,7 @@ public class BoardDao {
     public void remove() {
         final String query = "TRUNCATE TABLE board";
         try (final Connection connection = DbConnectionUtil.getConnection(database);
-             final PreparedStatement preparedStatement = connection.prepareStatement(query)
-        ) {
+             final PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.executeUpdate();
         } catch (final SQLException exception) {
             throw new DaoException(ErrorCode.FAIL_DELETE);

@@ -7,9 +7,9 @@ import java.util.List;
 
 public class CommandLine {
 
-    public static final int HEAD_INDEX = 0;
     public static final int CURRENT_POSITION_INDEX = 0;
     public static final int NEXT_POSITION_INDEX = 1;
+    private static final int HEAD_INDEX = 0;
 
     private final Command head;
     private final List<String> body;

@@ -13,7 +13,7 @@ public class ChessBoardDto {
     private static final String FILE_GUIDE_LINE = "abcdefgh";
     private static final String RANK_GUIDE_LINE_FORM = "  %s";
     private static final String EMPTY_POINT = ".";
-    private static final int BOARD_SIZE = 8;
+    private static final int BOARD_SIZE = 8; // TODO 욘석 어디에 있어야할까
 
     private final String board;
     private final String currentTurn;
