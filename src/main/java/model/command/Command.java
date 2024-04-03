@@ -7,29 +7,29 @@ import java.util.regex.Pattern;
 
 public enum Command {
 
-    START(Pattern.compile("start"), 0),
-    MOVE(Pattern.compile("move"), 2),
-    POSITION(Pattern.compile("[a-hA-H][1-8]"), 0),
-    STATUS(Pattern.compile("status"), 0),
-    QUIT(Pattern.compile("quit"), 0),
-    END(Pattern.compile("end"), 0);
+    START("start", 0),
+    MOVE("move", 2),
+    POSITION("[a-hA-H][1-8]", 0),
+    STATUS("status", 0),
+    QUIT("quit", 0),
+    END("end", 0);
 
     private final Pattern pattern;
     private final int bodySize;
 
-    Command(final Pattern pattern, final int bodySize) {
-        this.pattern = pattern;
+    Command(final String regex, final int bodySize) {
+        this.pattern = Pattern.compile(regex);
         this.bodySize = bodySize;
     }
 
-    public static Command from(String value) {
+    public static Command from(final String value) {
         return Arrays.stream(values())
                 .filter(command -> command.pattern.matcher(value).matches())
                 .findFirst()
                 .orElseThrow(() -> new InvalidCommandException(ErrorCode.INVALID_COMMAND));
     }
 
-    public boolean isEqualToBodySize(int targetSize) {
+    public boolean isEqualToBodySize(final int targetSize) {
         return bodySize == targetSize;
     }
 }
