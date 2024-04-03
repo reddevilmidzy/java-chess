@@ -49,7 +49,8 @@ public class ChessBoardDto {
 
     private static String convertToString(final Piece piece, final File file, final Rank rank) {
         if (piece != null) {
-            return PieceType.from(piece).getValue() + paddedRankGuidLine(file, rank);
+            final PieceType pieceType = PieceType.from(piece);
+            return pieceType.getValue() + paddedRankGuidLine(file, rank);
         }
         return EMPTY_POINT + paddedRankGuidLine(file, rank);
     }
