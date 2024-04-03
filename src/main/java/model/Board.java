@@ -60,7 +60,8 @@ public class Board {
 
     private static void settingExceptPawn(final Map<Position, Piece> board, final Camp camp, final Rank rank) {
         for (File file : File.values()) {
-            final Piece piece = startingPosition.get(file).apply(camp);
+            final Function<Camp, Piece> createFunction = startingPosition.get(file);
+            final Piece piece = createFunction.apply(camp);
             board.put(new Position(file, rank), piece);
         }
     }
@@ -142,14 +143,6 @@ public class Board {
         return result.minus(duplicateFilePawns(pawnCount));
     }
 
-    private List<Score> collectScore(final Camp camp) {
-        return pieces.values()
-                .stream()
-                .filter(piece -> piece.isSameCamp(camp))
-                .map(PieceScore::getScore)
-                .toList();
-    }
-
     private Map<File, Integer> countSameFilePawn(final Camp camp) {
         final Map<File, Integer> pawnCount = new EnumMap<>(File.class);
         pieces.entrySet()
@@ -159,15 +152,6 @@ public class Board {
         return pawnCount;
     }
 
-    private Score duplicateFilePawns(final Map<File, Integer> count) {
-        return count.values()
-                .stream()
-                .filter(sameFilePawnCount -> sameFilePawnCount > 1)
-                .map(sameFilePawnCount -> new Score(sameFilePawnCount * SAME_FILE_PAWN_SCORE.value()))
-                .reduce(Score::plus)
-                .orElse(new Score(0));
-    }
-
     private void checkPawn(final Entry<Position, Piece> entry, final Map<File, Integer> count) {
         final Piece piece = entry.getValue();
         if (PAWNS.contains(piece)) {
@@ -175,6 +159,23 @@ public class Board {
             final File file = position.getFile();
             count.put(file, count.getOrDefault(file, 0) + 1);
         }
+    }
+
+    private List<Score> collectScore(final Camp camp) {
+        return pieces.values()
+                .stream()
+                .filter(piece -> piece.isSameCamp(camp))
+                .map(PieceScore::getScore)
+                .toList();
+    }
+
+    private Score duplicateFilePawns(final Map<File, Integer> count) {
+        return count.values()
+                .stream()
+                .filter(sameFilePawnCount -> sameFilePawnCount > 1)
+                .map(sameFilePawnCount -> new Score(sameFilePawnCount * SAME_FILE_PAWN_SCORE.value()))
+                .reduce(Score::plus)
+                .orElse(new Score(0));
     }
 
     public Map<Position, Piece> getPieces() {
