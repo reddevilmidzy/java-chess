@@ -15,33 +15,34 @@ import model.position.Moving;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import service.ChessService;
 
-class RepositoryTest {
+class ChessServiceTest {
 
-    private final Repository repository = new Repository("chess_test");
+    private final ChessService chessService = new ChessService("chess_test");
 
     @BeforeEach
     void beforeEach() {
-        repository.removeAll();
+        chessService.removeAll();
     }
 
     @DisplayName("기보를 저장한다.")
     @Test
     void saveMoving() {
-        repository.saveMoving(new MovingDto("WHITE", "a2", "a3"));
-        assertThat(repository.hasGame()).isTrue();
+        chessService.saveMoving(new MovingDto("WHITE", "a2", "a3"));
+        assertThat(chessService.hasGame()).isTrue();
     }
 
     @DisplayName("진행된 게입이 없으면 false를 반환한다.")
     @Test
     void hasNoGame() {
-        assertThat(repository.hasGame()).isFalse();
+        assertThat(chessService.hasGame()).isFalse();
     }
 
     @DisplayName("저장된 게임이 없을 때 새로운 게임을 만든다.")
     @Test
     void createNewChessGame() {
-        final ChessGame game = repository.findGame();
+        final ChessGame game = chessService.findGame();
         final ChessGame expected = ChessGame.setupStartingPosition();
         assertAll(
                 () -> assertThat(game.getPieces()).isEqualTo(expected.getPieces()),
@@ -58,8 +59,8 @@ class RepositoryTest {
         expected.move(new Moving(A2, A3));
 
         //when
-        repository.saveMoving(new MovingDto("WHITE", "a2", "a3"));
-        final ChessGame game = repository.findGame();
+        chessService.saveMoving(new MovingDto("WHITE", "a2", "a3"));
+        final ChessGame game = chessService.findGame();
 
         //then
         assertAll(
@@ -75,18 +76,18 @@ class RepositoryTest {
         //given
         final ChessGame expected = ChessGame.setupStartingPosition();
         expected.move(new Moving(A2, A3));
-        repository.saveMoving(new MovingDto("WHITE", "a2", "a3"));
+        chessService.saveMoving(new MovingDto("WHITE", "a2", "a3"));
         expected.move(new Moving(G7, G6));
-        repository.saveMoving(new MovingDto("BLACK", "g7", "g6"));
+        chessService.saveMoving(new MovingDto("BLACK", "g7", "g6"));
 
         final BoardDto boardDto = BoardDto.from(expected.getBoard());
         final TurnDto turnDto = TurnDto.from(expected.getCamp(), expected.getTurn());
 
         //when
-        repository.save(boardDto, turnDto);
+        chessService.save(boardDto, turnDto);
 
         //then
-        final ChessGame game = repository.findGame();
+        final ChessGame game = chessService.findGame();
         assertAll(
                 () -> assertThat(game.getPieces()).isEqualTo(expected.getPieces()),
                 () -> assertThat(game.getCamp()).isEqualTo(expected.getCamp()),

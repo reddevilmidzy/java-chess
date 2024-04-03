@@ -1,6 +1,6 @@
 package controller;
 
-import db.Repository;
+import service.ChessService;
 import db.dto.BoardDto;
 import db.dto.MovingDto;
 import db.dto.TurnDto;
@@ -22,7 +22,7 @@ public class ChessController {
 
     private final InputView inputView;
     private final OutputView outputView;
-    private final Repository repository = new Repository("chess");
+    private final ChessService chessService = new ChessService("chess");
 
     public ChessController(final InputView inputView, final OutputView outputView) {
         this.inputView = inputView;
@@ -44,7 +44,7 @@ public class ChessController {
 
     private void save(final GameStatus gameStatus, final ChessGame chessGame) {
         if (gameStatus.isCheck() || gameStatus.isQuit()) {
-            repository.removeAll();
+            chessService.removeAll();
             return;
         }
         final Board board = chessGame.getBoard();
@@ -52,12 +52,12 @@ public class ChessController {
         final Turn turn = chessGame.getTurn();
         final BoardDto boardDto = BoardDto.from(board);
         final TurnDto turnDto = TurnDto.from(camp, turn);
-        repository.save(boardDto, turnDto);
+        chessService.save(boardDto, turnDto);
     }
 
     private ChessGame create() {
-        if (repository.hasGame()) {
-            return repository.findGame();
+        if (chessService.hasGame()) {
+            return chessService.findGame();
         }
         return ChessGame.setupStartingPosition();
     }
@@ -89,7 +89,7 @@ public class ChessController {
             final List<String> body = commandLine.getBody();
             final Camp camp = chessGame.getCamp().toggle();
             final MovingDto movingDto = MovingDto.from(body, camp);
-            repository.saveMoving(movingDto);
+            chessService.saveMoving(movingDto);
         }
     }
 
