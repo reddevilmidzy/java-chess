@@ -67,7 +67,9 @@ public class Repository { // TODO service아님? 왜 repository임
     }
 
     private boolean unsaved(final TurnDto findTurn, final List<MovingDto> findMoving) {
-        return findTurn.count() < findMoving.size();
+        final int turnCount = findTurn.count();
+        final int movingCount = findMoving.size();
+        return turnCount < movingCount;
     }
 
     private void restore(final TurnDto findTurn, final List<MovingDto> findMoving, final Board board) {
