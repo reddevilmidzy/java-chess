@@ -23,9 +23,9 @@ public enum Rank {
         this.index = index;
     }
 
-    public static Rank from(final char input) {
+    public static Rank from(final char target) {
         return Arrays.stream(values())
-                .filter(rank -> rank.value.equals(String.valueOf(input)))
+                .filter(rank -> rank.value.equals(String.valueOf(target)))
                 .findFirst()
                 .orElseThrow(() -> new InvalidPositionException(ErrorCode.INVALID_POSITION));
     }

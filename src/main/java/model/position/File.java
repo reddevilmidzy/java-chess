@@ -23,9 +23,9 @@ public enum File {
         this.index = index;
     }
 
-    public static File from(final char input) {
+    public static File from(final char target) {
         return Arrays.stream(values())
-                .filter(file -> file.value.equals(String.valueOf(input)))
+                .filter(file -> file.value.equals(String.valueOf(target)))
                 .findFirst()
                 .orElseThrow(() -> new InvalidPositionException(ErrorCode.INVALID_POSITION));
     }
@@ -34,7 +34,7 @@ public enum File {
         return Arrays.stream(values())
                 .filter(file -> file.index == targetIndex)
                 .findFirst()
-                .orElseThrow(() -> new IndexOutOfBoundsException("인덱스 범위 초과"));
+                .orElseThrow(() -> new InvalidPositionException(ErrorCode.INVALID_POSITION));
     }
 
     public boolean isLast() {

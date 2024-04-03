@@ -37,12 +37,12 @@ public enum PieceType {
     private final Piece piece;
     private final String value;
 
-    PieceType(Piece piece, String value) {
+    PieceType(final Piece piece, final String value) {
         this.piece = piece;
         this.value = value;
     }
 
-    public static PieceType from(Piece target) {
+    public static PieceType from(final Piece target) {
         if (SUIT_MESSAGE.containsKey(target)) {
             return SUIT_MESSAGE.get(target);
         }

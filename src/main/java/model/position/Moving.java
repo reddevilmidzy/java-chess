@@ -66,8 +66,8 @@ public class Moving {
 
         final Set<Position> result = new HashSet<>();
         for (int i = 1; i < distance(); i++) {
-            Rank rank = Rank.from(currentRank + (i * direction.getDeltaRank()));
-            File file = File.from(currentFile + (i * direction.getDeltaFile()));
+            final Rank rank = Rank.from(currentRank + (i * direction.getDeltaRank()));
+            final File file = File.from(currentFile + (i * direction.getDeltaFile()));
             result.add(new Position(file, rank));
         }
         return result;
