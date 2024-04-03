@@ -12,8 +12,10 @@ import model.Camp;
 import model.ChessGame;
 import model.GameTurn;
 import model.Turn;
+import model.command.CommandLine;
 import model.position.Moving;
 import model.position.Position;
+import model.status.GameStatus;
 
 public class ChessService {
 
@@ -27,6 +29,13 @@ public class ChessService {
         this.boardDao = new BoardDao(database);
     }
 
+    public ChessGame bringGame() {
+        if (hasGame()) {
+            return findGame();
+        }
+        return ChessGame.setupStartingPosition();
+    }
+
     public void removeAll() {
         turnDao.remove();
         boardDao.remove();
@@ -36,6 +45,29 @@ public class ChessService {
     public boolean hasGame() {
         return movingDao.countMoving() > 0;
     }
+
+    public void save(final GameStatus gameStatus, final ChessGame chessGame) {
+        if (gameStatus.isCheck() || gameStatus.isQuit()) {
+            removeAll();
+            return;
+        }
+        final Board board = chessGame.getBoard();
+        final Camp camp = chessGame.getCamp();
+        final Turn turn = chessGame.getTurn();
+        final BoardDto boardDto = BoardDto.from(board);
+        final TurnDto turnDto = TurnDto.from(camp, turn);
+        save(boardDto, turnDto);
+    }
+
+    public void saveMoving(final ChessGame chessGame, final CommandLine commandLine) {
+        if (commandLine.isMove()) {
+            final List<String> body = commandLine.getBody();
+            final Camp camp = chessGame.getCamp().toggle();
+            final MovingDto movingDto = MovingDto.from(body, camp);
+            saveMoving(movingDto);
+        }
+    }
+
 
     public void save(final BoardDto board, final TurnDto turnDto) {
         boardDao.remove();
