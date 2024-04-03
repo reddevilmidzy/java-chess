@@ -1,6 +1,5 @@
 package controller;
 
-import service.ChessService;
 import db.dto.BoardDto;
 import db.dto.MovingDto;
 import db.dto.TurnDto;
@@ -15,6 +14,7 @@ import model.Turn;
 import model.command.CommandLine;
 import model.status.GameStatus;
 import model.status.StatusFactory;
+import service.ChessService;
 import view.InputView;
 import view.OutputView;
 
@@ -22,27 +22,26 @@ public class ChessController {
 
     private final InputView inputView;
     private final OutputView outputView;
-    private final ChessService chessService = new ChessService("chess");
 
     public ChessController(final InputView inputView, final OutputView outputView) {
         this.inputView = inputView;
         this.outputView = outputView;
     }
 
-    public void run() {
+    public void run(final ChessService chessService) {
         outputView.printStartMessage();
         GameStatus gameStatus = initGame();
-        final ChessGame chessGame = create();
+        final ChessGame chessGame = create(chessService);
         if (gameStatus.isRunning()) {
             outputView.printChessBoard(ChessBoardDto.from(chessGame));
         }
         while (gameStatus.isRunning()) {
-            gameStatus = play(gameStatus, chessGame);
+            gameStatus = play(chessService, gameStatus, chessGame);
         }
-        save(gameStatus, chessGame);
+        save(chessService, gameStatus, chessGame);
     }
 
-    private void save(final GameStatus gameStatus, final ChessGame chessGame) {
+    private void save(final ChessService chessService, final GameStatus gameStatus, final ChessGame chessGame) {
         if (gameStatus.isCheck() || gameStatus.isQuit()) {
             chessService.removeAll();
             return;
@@ -55,7 +54,7 @@ public class ChessController {
         chessService.save(boardDto, turnDto);
     }
 
-    private ChessGame create() {
+    private ChessGame create(final ChessService chessService) {
         if (chessService.hasGame()) {
             return chessService.findGame();
         }
@@ -71,20 +70,20 @@ public class ChessController {
         }
     }
 
-    private GameStatus play(final GameStatus preStatus, final ChessGame chessGame) {
+    private GameStatus play(final ChessService chessService, final GameStatus preStatus, final ChessGame chessGame) {
         try {
             final CommandLine commandLine = readCommandLine();
             final GameStatus status = preStatus.play(commandLine, chessGame);
-            saveMoving(chessGame, commandLine);
+            saveMoving(chessService, chessGame, commandLine);
             print(status, commandLine, chessGame);
             return status;
         } catch (final CustomException exception) {
             outputView.printException(exception.getErrorCode());
-            return play(preStatus, chessGame);
+            return play(chessService, preStatus, chessGame);
         }
     }
 
-    private void saveMoving(final ChessGame chessGame, final CommandLine commandLine) {
+    private void saveMoving(final ChessService chessService, final ChessGame chessGame, final CommandLine commandLine) {
         if (commandLine.isMove()) {
             final List<String> body = commandLine.getBody();
             final Camp camp = chessGame.getCamp().toggle();
