@@ -16,7 +16,7 @@ public enum CampType {
         this.colorName = colorName;
     }
 
-    public static CampType findByColorName(final String color) { // TODO enum 찾는 static 메서드명 통일하기
+    public static CampType findByColorName(final String color) {
         return Arrays.stream(values())
                 .filter(campType -> campType.colorName.equals(color))
                 .findFirst()

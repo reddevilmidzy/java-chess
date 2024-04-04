@@ -43,14 +43,14 @@ public enum PieceType {
         this.pieceName = pieceName;
     }
 
-    public static PieceType findValue(final Piece target) {
+    public static PieceType findByPiece(final Piece target) {
         if (SUIT_PIECE_TYPE.containsKey(target)) {
             return SUIT_PIECE_TYPE.get(target);
         }
         throw new MessageDoesNotExistException(ErrorCode.NO_MESSAGE);
     }
 
-    public static PieceType findValue(final Camp camp, final String type) {
+    public static PieceType findByCampAndType(final Camp camp, final String type) {
         final List<PieceType> pieceTypes = Arrays.stream(values())
                 .filter(pieceType -> pieceType.pieceName.equals(type))
                 .toList();
