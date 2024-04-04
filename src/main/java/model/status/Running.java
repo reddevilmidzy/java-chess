@@ -33,7 +33,7 @@ public class Running implements GameStatus {
         try {
             chessGame.move(moving);
             return new Running();
-        } catch (KingDeadException exception) {
+        } catch (final KingDeadException exception) {
             return new Checkmate();
         }
     }

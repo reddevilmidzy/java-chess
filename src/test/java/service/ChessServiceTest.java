@@ -1,4 +1,4 @@
-package db;
+package service;
 
 import static model.Fixtures.A2;
 import static model.Fixtures.A3;
@@ -15,7 +15,6 @@ import model.position.Moving;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import service.ChessService;
 
 class ChessServiceTest {
 

@@ -69,14 +69,14 @@ public class ChessService {
     }
 
 
-    public void save(final BoardDto board, final TurnDto turnDto) {
+    protected void save(final BoardDto board, final TurnDto turnDto) {
         boardDao.remove();
         boardDao.saveBoard(board);
         turnDao.remove();
         turnDao.saveTurn(turnDto);
     }
 
-    public void saveMoving(final MovingDto moving) {
+    protected void saveMoving(final MovingDto moving) {
         movingDao.addMoving(moving);
     }
 

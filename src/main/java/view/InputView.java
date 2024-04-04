@@ -14,12 +14,12 @@ public class InputView {
     }
 
     public List<String> readCommandList() {
-        String rawCommand = scanner.nextLine();
+        final String rawCommand = scanner.nextLine();
         validate(rawCommand);
         return List.of(rawCommand.split(" "));
     }
 
-    private void validate(String value) {
+    private void validate(final String value) {
         if (value == null || value.isBlank()) {
             throw new InvalidInputException(ErrorCode.INVALID_INPUT);
         }
