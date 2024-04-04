@@ -9,13 +9,18 @@ import static model.Fixtures.B8;
 import static model.Fixtures.C2;
 import static model.Fixtures.C3;
 import static model.Fixtures.C6;
+import static model.Fixtures.E2;
+import static model.Fixtures.E8;
 import static model.Fixtures.F4;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import exception.KingDeadException;
 import java.util.Map;
+import model.piece.King;
 import model.piece.Piece;
+import model.piece.Queen;
 import model.piece.WhitePawn;
 import model.position.Moving;
 import model.position.Position;
@@ -108,5 +113,34 @@ class BoardTest {
         //then
         assertThatThrownBy(() -> pieces.put(F4, piece))
                 .isInstanceOf(UnsupportedOperationException.class);
+    }
+
+    @DisplayName("킹을 잡으려 하면 예외가 발생한다.")
+    @Test
+    void failToCatchKing() {
+        //given
+        final Map<Position, Piece> pieces = Map.of(
+                E8, new King(Camp.BLACK),
+                E2, new Queen(Camp.WHITE));
+
+        final Board board = new Board(pieces);
+
+        final Moving moving = new Moving(E2, E8);
+        /*
+        ....K...  8
+        ........  7
+        ........  6
+        ........  5
+        ........  4
+        ........  3
+        ....q...  2
+        ........  1
+
+        abcdefgh
+         */
+
+        //when && then
+        assertThatThrownBy(() -> board.validate(moving, Camp.WHITE))
+                .isInstanceOf(KingDeadException.class);
     }
 }
