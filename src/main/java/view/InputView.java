@@ -7,19 +7,18 @@ import java.util.Scanner;
 
 public class InputView {
 
-    private final Scanner scanner;
+    private static final Scanner scanner = new Scanner(System.in);
 
-    public InputView(final Scanner scanner) {
-        this.scanner = scanner;
+    private InputView() {
     }
 
-    public List<String> readCommandList() {
+    public static List<String> readCommandList() {
         final String rawCommand = scanner.nextLine();
         validate(rawCommand);
         return List.of(rawCommand.split(" "));
     }
 
-    private void validate(final String value) {
+    private static void validate(final String value) {
         if (value == null || value.isBlank()) {
             throw new InvalidInputException(ErrorCode.INVALID_INPUT);
         }
