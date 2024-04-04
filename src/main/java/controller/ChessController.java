@@ -14,18 +14,22 @@ import view.OutputView;
 
 public class ChessController {
 
+    private final InputView inputView;
+    private final OutputView outputView;
     private final ChessService chessService;
 
-    public ChessController(final ChessService chessService) {
+    public ChessController(final InputView inputView, final OutputView outputView, final ChessService chessService) {
+        this.inputView = inputView;
+        this.outputView = outputView;
         this.chessService = chessService;
     }
 
     public void run() {
-        OutputView.printStartMessage();
+        outputView.printStartMessage();
         GameStatus gameStatus = initGame();
         final ChessGame chessGame = chessService.bringGame();
         if (gameStatus.isRunning()) {
-            OutputView.printChessBoard(ChessBoardDto.from(chessGame));
+            outputView.printChessBoard(ChessBoardDto.from(chessGame));
         }
         while (gameStatus.isRunning()) {
             gameStatus = play(gameStatus, chessGame);
@@ -37,7 +41,7 @@ public class ChessController {
         try {
             return StatusFactory.create(readCommandLine());
         } catch (final CustomException exception) {
-            OutputView.printException(exception.getErrorCode());
+            outputView.printException(exception.getErrorCode());
             return initGame();
         }
     }
@@ -50,30 +54,30 @@ public class ChessController {
             print(status, commandLine, chessGame);
             return status;
         } catch (final CustomException exception) {
-            OutputView.printException(exception.getErrorCode());
+            outputView.printException(exception.getErrorCode());
             return play(preStatus, chessGame);
         }
     }
 
     private void print(final GameStatus gameStatus, final CommandLine commandLine, final ChessGame chessGame) {
         if (gameStatus.isCheck()) {
-            OutputView.printWinner(chessGame.getCamp().toString());
+            outputView.printWinner(chessGame.getCamp().toString());
             return;
         }
         if (commandLine.isStatus()) {
-            OutputView.printScore(ScoreDto.from(chessGame));
+            outputView.printScore(ScoreDto.from(chessGame));
         }
         if (commandLine.isStart() || commandLine.isMove()) {
-            OutputView.printChessBoard(ChessBoardDto.from(chessGame));
+            outputView.printChessBoard(ChessBoardDto.from(chessGame));
         }
     }
 
     private CommandLine readCommandLine() {
         try {
-            final List<String> command = InputView.readCommandList();
+            final List<String> command = inputView.readCommandList();
             return CommandLine.from(command);
         } catch (final CustomException exception) {
-            OutputView.printException(exception.getErrorCode());
+            outputView.printException(exception.getErrorCode());
         }
         return readCommandLine();
     }

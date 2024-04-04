@@ -7,10 +7,7 @@ import view.message.ErrorCodeMessage;
 
 public class OutputView {
 
-    private OutputView() {
-    }
-
-    public static void printStartMessage() {
+    public void printStartMessage() {
         System.out.println("> 체스 게임을 시작합니다.");
         System.out.println("> 게임 시작 : start");
         System.out.println("> 게임 저장 후 종료 : end");
@@ -19,21 +16,21 @@ public class OutputView {
         System.out.println("> 게임 현황 : status");
     }
 
-    public static void printChessBoard(final ChessBoardDto chessBoardDto) {
+    public void printChessBoard(final ChessBoardDto chessBoardDto) {
         System.out.printf(chessBoardDto.getBoard());
         System.out.printf("현재 턴: %s%n%n", chessBoardDto.getCurrentTurn());
     }
 
-    public static void printScore(final ScoreDto scoreDto) {
+    public void printScore(final ScoreDto scoreDto) {
         System.out.printf("BLACK 점수: %s%n", scoreDto.getBlackScore());
         System.out.printf("WHITE 점수: %s%n", scoreDto.getWhiteScore());
     }
 
-    public static void printException(final ErrorCode errorCode) {
+    public void printException(final ErrorCode errorCode) {
         System.out.printf("[ERROR] %s%n", ErrorCodeMessage.from(errorCode).getMessage());
     }
 
-    public static void printWinner(final String camp) {
+    public void printWinner(final String camp) {
         System.out.printf("%s 승리%n", camp);
     }
 }
